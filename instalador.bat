@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 :: --- Configurações ---
 set "VENV_DIR=venv"
-set "APP_NAME=GeradorDeSenhasPro"
+set "APP_NAME=gerador_de_senhas"
 set "MAIN_FILE=main.py"
 
 echo ====================================================
