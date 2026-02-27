@@ -46,7 +46,7 @@ if exist "dist\!APP_NAME!.exe" (
 
     echo.
     echo ====================================================
-    echo   SUCESSO! !APP_NAME!.exe pronto na raiz.
+    echo   SUCESSO !APP_NAME!.exe pronto na raiz.
     echo ====================================================
 ) else (
     echo.
