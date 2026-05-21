@@ -1,6 +1,7 @@
 import sys
 import random
 import string
+from dark_theme import apply_theme, COLORS
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -75,7 +76,7 @@ class PasswordGenerator(QMainWindow):
 
         # Title
         self.title_label = QLabel("Gerador de Senhas")
-        self.title_label.setObjectName("titleLabel")
+        self.title_label.setObjectName("title")
         self.title_label.setAlignment(Qt.AlignCenter)
         self.main_layout.addWidget(self.title_label)
 
@@ -164,25 +165,14 @@ class PasswordGenerator(QMainWindow):
         # Copy button
         self.copy_button = QPushButton("COPIAR TUDO")
         self.copy_button.setCursor(Qt.PointingHandCursor)
-        self.copy_button.setObjectName("secondaryButton")
+        self.copy_button.setObjectName("secondary")
         self.copy_button.clicked.connect(self.copy_password)
         self.main_layout.addWidget(self.copy_button)
 
         # Status Bar for notifications
         self.setStatusBar(self.statusBar())
-        self.statusBar().setStyleSheet("""
-            QStatusBar {
-                background: #121212;
-                color: #019DEA;
-                font-weight: bold;
-                border-top: 1px solid #1E1E1E;
-            }
-            QStatusBar::item {
-                border: none;
-            }
-        """)
 
-        self.set_dark_theme()
+        self._apply_supplementary_styles()
 
     def update_length_label(self, value):
         self.length_value_label.setText(str(value))
@@ -224,138 +214,26 @@ class PasswordGenerator(QMainWindow):
             clipboard.setText(text)
             self.statusBar().showMessage("Todas as senhas foram copiadas!", 3000)
 
-    def set_dark_theme(self):
-        self.setStyleSheet('''
-            QMainWindow {
-                background-color: #121212;
-            }
-            QWidget {
-                background-color: transparent;
-                color: #E0E0E0;
-                font-family: 'Segoe UI', sans-serif;
-                font-size: 14px;
-            }
-            #titleLabel {
-                font-size: 24px;
-                font-weight: bold;
-                color: #ffffff;
-                margin-bottom: 10px;
-            }
-            #configFrame {
-                background-color: #1E1E1E;
+    def _apply_supplementary_styles(self):
+        self.setStyleSheet(f"""
+            QFrame#configFrame {{
+                background-color: {COLORS['bg_card']};
+                border: 1px solid {COLORS['border_mid']};
                 border-radius: 10px;
                 padding: 10px;
-            }
-            #accentLabel {
-                color: #019DEA;
+            }}
+            QLabel#accentLabel {{
+                color: {COLORS['accent']};
                 font-weight: bold;
                 font-size: 16px;
-            }
-            QPushButton {
-                background-color: #019DEA;
-                color: white;
-                border: none;
-                padding: 10px;
-                border-radius: 6px;
-                font-weight: bold;
-                font-size: 14px;
-            }
-            QPushButton:hover {
-                background-color: #0186C8;
-            }
-            QPushButton:pressed {
-                background-color: #016EAA;
-            }
-            #secondaryButton {
-                background-color: #333333;
-                border: 1px solid #444444;
-            }
-            #secondaryButton:hover {
-                background-color: #444444;
-            }
-            QTextEdit, QSpinBox {
-                background-color: #252525;
-                border: 1px solid #333333;
-                color: #FFFFFF;
-                padding: 8px;
-                border-radius: 6px;
-            }
-            QTextEdit:focus, QSpinBox:focus {
-                border: 1px solid #019DEA;
-            }
-            QSlider::groove:horizontal {
-                border: 1px solid #333333;
-                height: 6px;
-                background: #333333;
-                margin: 2px 0;
-                border-radius: 3px;
-            }
-            QSlider::handle:horizontal {
-                background: #019DEA;
-                border: none;
-                width: 16px;
-                height: 16px;
-                margin: -5px 0;
-                border-radius: 8px;
-            }
-            QCheckBox {
-                spacing: 10px;
-            }
-            QCheckBox::indicator {
-                width: 18px;
-                height: 18px;
-                border-radius: 4px;
-                border: 2px solid #444444;
-                background-color: #252525;
-            }
-            QCheckBox::indicator:checked {
-                background-color: #019DEA;
-                border: 2px solid #019DEA;
-            }
-            QCheckBox::indicator:unchecked:hover {
-                border: 2px solid #019DEA;
-            }
-            QCheckBox::indicator:checked:hover {
-                background-color: #0186C8;
-                border: 2px solid #0186C8;
-            }
-            /* Scrollbar Styling */
-            QScrollBar:vertical {
-                border: none;
-                background: #1E1E1E;
-                width: 10px;
-                margin: 0px;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical {
-                background: #444444;
-                min-height: 20px;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical:hover {
-                background: #019DEA;
-            }
-            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-                height: 0px;
-            }
-            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-                background: none;
-            }
-            /* ToolTip Styling */
-            QToolTip {
-                background-color: #019DEA;
-                color: white;
-                border: 1px solid #019DEA;
-                border-radius: 4px;
-                padding: 5px;
-                font-weight: bold;
-            }
-        ''')
+            }}
+        """)
 
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    apply_theme(app)
     window = PasswordGenerator()
     window.show()
     sys.exit(app.exec())
